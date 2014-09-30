@@ -1,19 +1,28 @@
 ---
 title: "Chapter 8"
 author: "Mark Dunning"
-date: "30 September 2014"
+date: "2 October 2014"
 output: html_document
 ---
 
-# Code chunks
+# Controlling Code chunks
 
 ##Include
+
+Use `include = FALSE` when you want code to be executed, but not display the code or the execution results. 
+
+e.g. *you want to set some formatting options for the document*
 
 ```{r include=FALSE}
 options(digits = 3,width=100)
 ```
 
 ##eval
+
+Use `eval=FALSE` when you want to display some formatted R code, but not actually run.
+
+e.g. *you want to give some copy-and-paste instructions to the user, but not run it as part of your script*
+
 
 ```{r eval=FALSE}
 ?options
@@ -22,12 +31,22 @@ install.packages("ggplot2")
 
 ##echo
 
-```{r}
-library(ggplot2)
+Use `echo=FALSE` if you want the consequences of the code to be displayed, but not the code itself.
+
+e.g. *you are share an analysis script with a collaborator, but don't want to expose them to the gory details of how the plots were created*
+
+>Here is an excellent plot of two randomly-generated vectors
+```{r echo=FALSE}
+x <- runif(100,0,1)
+y <- runif(100,1,2)
+plot(x,y,ylim=c(0,2))
 ```
 
+##results
 
-```{r}
+e.g. *the code you are running produces lots of annoying print statements*
+
+```{r results='hide'}
 coins <- NULL
 
 for(i in 1:100){
@@ -36,6 +55,19 @@ for(i in 1:100){
   ifelse(mycoin, print("Heads"), print("Tails"))
   coins[i] <- mycoin
 }
+```
+
+```{r}
 table(coins)
 ```
 
+
+
+##warning, message
+
+```{r warning=FALSE,message=FALSE}
+library(beadarray)
+```
+
+
+#in-line code
