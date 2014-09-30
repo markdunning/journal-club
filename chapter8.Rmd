@@ -1,0 +1,41 @@
+---
+title: "Chapter 8"
+author: "Mark Dunning"
+date: "30 September 2014"
+output: html_document
+---
+
+# Code chunks
+
+##Include
+
+```{r include=FALSE}
+options(digits = 3,width=100)
+```
+
+##eval
+
+```{r eval=FALSE}
+?options
+install.packages("ggplot2")
+```
+
+##echo
+
+```{r}
+library(ggplot2)
+```
+
+
+```{r}
+coins <- NULL
+
+for(i in 1:100){
+  
+  mycoin <- rbinom(1,1,0.5)
+  ifelse(mycoin, print("Heads"), print("Tails"))
+  coins[i] <- mycoin
+}
+table(coins)
+```
+
