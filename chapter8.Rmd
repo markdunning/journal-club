@@ -17,6 +17,20 @@ e.g. *you want to set some formatting options for the document*
 options(digits = 3,width=100)
 ```
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ##eval
 
 Use `eval=FALSE` when you want to display some formatted R code, but not actually run.
@@ -29,6 +43,19 @@ e.g. *you want to give some copy-and-paste instructions to the user, but not run
 install.packages("ggplot2")
 ```
 
+
+
+
+
+
+
+
+
+
+
+
+
+
 ##echo
 
 Use `echo=FALSE` if you want the consequences of the code to be displayed, but not the code itself.
@@ -37,12 +64,32 @@ e.g. *you are share an analysis script with a collaborator, but don't want to ex
 
 >Here is an excellent plot of two randomly-generated vectors
 ```{r echo=FALSE}
-x <- runif(100,0,1)
-y <- runif(100,1,2)
-plot(x,y,ylim=c(0,2))
+x <- rnorm(100, mean=3.5, sd = 2)
+y <- (x * rnorm(100,mean=6,sd=1)) +  runif(100,min = 2,4)
+df <- data.frame(x,y)  
+library(ggplot2)
+
+p <- ggplot(df, aes(x=x, y=y)) + geom_point() +
+  geom_smooth(method="loess") + 
+  xlab("x") + ylab("y") 
+p
 ```
 
+
+
+
+
+
+
+
+
+
+
+
+
+
 ##results
+`results='hide` shows the code, but not the results; opposite of `echo=FALSE`
 
 e.g. *the code you are running produces lots of annoying print statements*
 
@@ -63,11 +110,123 @@ table(coins)
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ##warning, message
+
+`warning` and `message` can be used be supress warning or messages that occur
+
+```{r}
+library(RColorBrewer)
+mypal <- brewer.pal(2, "Set1")
+```
+
+
+*e.g. package messages on startup*
 
 ```{r warning=FALSE,message=FALSE}
 library(beadarray)
 ```
 
+N.B. could use `suppressPackageStartupMessages` or `suppressMessages`
+
+```{r}
+suppressPackageStartupMessages(library(beadarray))
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+##cache
+Some steps can be time-consuming and you may not want to re-run every time. Caching will run the code for the first time, and then save the results to disk. If the code does not change, the output will be taken from disk.
+
+
+```{r}
+list.files()
+```
+
+
+```{r zzzzzz, cache=TRUE}
+
+for(i in 1:10){
+  ###insert complex calculation here....
+  ##
+  Sys.sleep(2)
+}
+
+Sys.time()
+
+x <- rnorm(10000,0,1)
+hist(x)
+```
+
+
+
+
+```{r}
+list.files()
+```
+
+```{r}
+list.files("chapter8_cache/")
+```
+
 
 #in-line code
+
+You can run R code within your text document. 
+
+*e.g. you run a code chunk and want to provide a commentary on the results*
+
+```{r results='hide'}
+coins <- NULL
+
+for(i in 1:50){
+  
+  mycoin <- rbinom(1,1,0.5)
+  ifelse(mycoin, print("Heads"), print("Tails"))
+  coins[i] <- mycoin
+}
+```
+
+```{r}
+table(coins)
+```
+
+>The number of heads was 49 and number of tails was 51. We can see that......
+
+The results are  'hard-coded' in the description, so will not be updated if the raw data change
+
+>The number of heads was `r table(coins)[1]` and number of tails was `r table(coins)[2]`. We can see that......
+
+
+You can also run code from other *engines*
+
+```{r engine='ruby'}
+print "Hello from Ruby"
+
+```
+
