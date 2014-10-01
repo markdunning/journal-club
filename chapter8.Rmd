@@ -169,7 +169,7 @@ list.files()
 ```
 
 
-```{r zzzzzz, cache=TRUE}
+```{r zzzzzz}
 
 for(i in 1:10){
   ###insert complex calculation here....
@@ -201,26 +201,18 @@ You can run R code within your text document.
 
 *e.g. you run a code chunk and want to provide a commentary on the results*
 
-```{r results='hide'}
-coins <- NULL
+```{r randommean, eval=TRUE,cache=FALSE}
 
-for(i in 1:50){
-  
-  mycoin <- rbinom(1,1,0.5)
-  ifelse(mycoin, print("Heads"), print("Tails"))
-  coins[i] <- mycoin
-}
+mypop <- rnorm(10,mean=50,sd=2)
+mypop
+mean(mypop)
 ```
 
-```{r}
-table(coins)
-```
-
->The number of heads was 49 and number of tails was 51. We can see that......
+>The mean of my population is 50.4 and standard deviation is 2.4. We can see that......
 
 The results are  'hard-coded' in the description, so will not be updated if the raw data change
 
->The number of heads was `r table(coins)[1]` and number of tails was `r table(coins)[2]`. We can see that......
+>The number of heads was `r mean(mypop)` and standard deviation is `r sd(mypop)`. We can see that......
 
 
 You can also run code from other *engines*
@@ -229,4 +221,32 @@ You can also run code from other *engines*
 print "Hello from Ruby"
 
 ```
+
+*e.g. you want to run a make file, as we discussed last week*
+
+```{r engine='bash', eval=FALSE}
+make cleanMerge all
+```
+
+##Making the random reproducible
+
+Using the `set.seed` function
+
+```{r randommean2}
+set.seed(02102014)
+mypop1 <- rnorm(10,mean=50,sd=2)
+mypop1
+
+set.seed(02102014)
+mypop2 <- rnorm(10,mean=50,sd=2)
+mypop2
+
+all(mypop1 == mypop2)
+
+mean(mypop1)
+```
+
+>The mean of my population was `r mean(mypop1)` and standard deviation is `r sd(mypop1)`. We can see that......
+
+
 
